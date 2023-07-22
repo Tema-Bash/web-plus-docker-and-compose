@@ -9,4 +9,4 @@ Thumbs.db
 .env
 
 # DB data
-pg_data
+# pg_data
