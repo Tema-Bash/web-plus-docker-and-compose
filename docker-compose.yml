@@ -6,17 +6,17 @@ services:
     build: ./frontend
     restart: unless-stopped
     ports:
-      - "8081:80"
+      - 8081:80
   backend:
-    container_name: anf-backend
+    container_name: api
     build: ./backend
     networks:
       - backend-database
     env_file:
       - ./.env
-    restart: unless-stopped
+    restart: on-failure
     ports:
-      - "4000:3000"
+      - 4000:3000
     depends_on:
       - database
   database:
