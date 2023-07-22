@@ -1,4 +1,5 @@
-export const URL = "http://api.anf.nomoredomains.work";
+const { protocol } = window.location;
+export const URL = `${protocol}//api.anf.nomoredomains.work`;
 
 export const MINIMUM_PASSWORD_LENGTH = 3;
 export const MINIMUM_USERNAME_LENGTH = 3;
