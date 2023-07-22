@@ -1,14 +1,14 @@
 FROM node:16-alpine AS builder
 
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --omit=dev --no-audit --no-fund
-COPY . ./
+COPY ./package*.json ./
+RUN npm ci --audit=false
+COPY . .
+
 RUN npm run build
 
-FROM nginx:latest AS frontend
-RUN rm -rf /usr/share/nginx/html/*
+FROM nginx:latest AS production
 COPY --from=builder /app/build /usr/share/nginx/html
-COPY nginx/conf.d/default.conf /etc/nginx/conf.d
+COPY ./nginx/conf.d/default.conf /etc/nginx/conf.d
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "nginx", "-g", "daemon off;" ]
