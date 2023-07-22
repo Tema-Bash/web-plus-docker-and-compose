@@ -1,0 +1,11 @@
+# Dependence
+node_modules
+
+# Build
+build
+
+# GIT
+.gitignore
+
+# Readme
+README.md
