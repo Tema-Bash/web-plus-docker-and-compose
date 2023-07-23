@@ -1,17 +1,11 @@
 version: "3"
 
 services:
-  frontend:
-    container_name: anf-frontend
-    build: ./frontend
-    restart: unless-stopped
-    ports:
-      - 8081:80
   backend:
-    container_name: anf-backend
+    container_name: api
     build: ./backend
     networks:
-      - backend-database
+      - api-db
     env_file:
       - ./.env
     restart: on-failure
@@ -20,16 +14,24 @@ services:
     depends_on:
       - database
   database:
-    container_name: anf-db
+    container_name: database
     image: postgres:12
     networks:
-      - backend-database
+      - api-db
     env_file:
       - ./.env
-    restart: unless-stopped
+    restart: on-failure
     volumes:
-      - ./pg_data:/var/lib/postgresql/data/pgdata
+      - pg_data:/var/lib/postgresql/data/pgdata
+  frontend:
+    container_name: anf-frontend
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - 8081:80
+
 volumes:
   pg_data:
+
 networks:
-  backend-database: {}
+  api-db: {}

@@ -15,4 +15,4 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   await app.listen(3000);
 }
-bootstrap().then(() => console.log('Started'));;
+bootstrap().then(() => console.log('Started'));

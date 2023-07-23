@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'anf-backend',
+      name: 'kpd-api',
       script: './dist/main.js',
     },
   ],
