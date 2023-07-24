@@ -5,6 +5,7 @@ import {
   IsString,
   IsOptional,
 } from 'class-validator';
+import { Column } from 'typeorm/decorator/columns/Column';
 
 export class CreateWishDto {
   @IsString()
@@ -20,7 +21,7 @@ export class CreateWishDto {
   @IsPositive()
   price: number;
 
-  @IsPositive()
+  @Column({ default: 0 })
   raised: number;
 
   @IsString()

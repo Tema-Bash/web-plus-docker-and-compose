@@ -32,7 +32,7 @@ export class UsersController {
 
   @Get('me')
   getUser(@Req() req: RequestUser) {
-    return req.user;
+    return this.usersService.findById(req.user.id);
   }
 
   @Patch('me')

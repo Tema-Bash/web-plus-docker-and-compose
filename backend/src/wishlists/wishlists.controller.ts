@@ -8,25 +8,39 @@ import {
   Delete,
   UseGuards,
   Req,
+  Injectable
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { WishlistsService } from './wishlists.service';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-
+import { In, Repository } from 'typeorm';
+import { Wishlist } from './entities/wishlist.entity';
+@Injectable()
 @UseGuards(JwtAuthGuard)
 @Controller('wishlistlists')
 export class WishlistsController {
   constructor(private readonly wishlistsService: WishlistsService) {}
 
   @Post()
-  create(@Body() createWishlistDto: CreateWishlistDto, @Req() req) {
-    return this.wishlistsService.create(req.user.id, createWishlistDto);
+  async create(
+    @Req() req,
+    @Body() createWishlistDto: CreateWishlistDto,
+  ): Promise<Wishlist> {
+    return this.wishlistsService.create(req.user, createWishlistDto);
   }
 
+
   @Get()
-  getWishlists() {
-    return this.wishlistsService.getWishlists();
+  async getWishLists() {
+    const wishlists = await this.wishlistsService.getWishlists();
+    wishlists.forEach((item) => {
+      delete item.owner.password;
+      delete item.owner.email;
+    });
+    return wishlists;
+
   }
 
   @Get(':id')

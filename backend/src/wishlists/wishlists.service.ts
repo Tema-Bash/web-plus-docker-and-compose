@@ -10,6 +10,8 @@ import { Wishlist } from './entities/wishlist.entity';
 
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
+import { User } from 'src/users/entities/user.entity';
+import { In } from 'typeorm';
 
 @Injectable()
 export class WishlistsService {
@@ -18,17 +20,25 @@ export class WishlistsService {
     private wishlistsRepository: Repository<Wishlist>,
   ) {}
 
-  create(ownerId, createWishlistDto: CreateWishlistDto) {
-    const { name, description = '', image, itemsId } = createWishlistDto;
-    const items = itemsId.map((id) => ({ id }));
-    const newWishList = this.wishlistsRepository.create({
-      name,
-      description,
-      image,
-      items,
-      owner: { id: ownerId },
+  async create(user: User, createDto: CreateWishlistDto) {
+    const items = await this.findMany({
+      where: { id: In(createDto.itemsId) },
     });
-    return this.wishlistsRepository.save(newWishList);
+
+    delete createDto.itemsId;
+    const list = await this.wishlistsRepository.save({
+      owner: {
+        id: user.id,
+        username: user.username,
+        about: user.about,
+        avatar: user.avatar,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+      items,
+      ...createDto,
+    });
+    return list;
   }
 
   findMany(query: FindManyOptions<Wishlist>) {
@@ -41,7 +51,10 @@ export class WishlistsService {
 
   getWishlists() {
     return this.findMany({
-      relations: ['owner', 'items'],
+      relations: {
+        items: true,
+        owner: true,
+      },
     });
   }
 

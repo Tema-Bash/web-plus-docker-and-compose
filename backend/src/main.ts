@@ -7,6 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   const corsOptions = {
     origin: ['http://anf.nomoredomains.xyz', 'https://anf.nomoredomains.xyz'],
+    // origin: ['http://localhost:3000', 'https://localhost:3000'],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     allowedHeaders: ['authorization', 'content-type'],
   };

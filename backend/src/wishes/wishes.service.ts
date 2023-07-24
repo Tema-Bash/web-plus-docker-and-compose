@@ -48,7 +48,7 @@ export class WishesService {
       },
       where: { id },
     });
-    if (wish) {
+    if (!wish) {
       throw new NotFoundException(`Такой подарок не существует`);
     } else {
       return wish;

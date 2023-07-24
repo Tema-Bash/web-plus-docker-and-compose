@@ -29,7 +29,7 @@ export class Wishlist {
   @Length(1, 250)
   name: string; // название списка.  Не может быть длиннее 250 символов и короче одного
 
-  @Column({ type: 'varchar', length: 1500 })
+  @Column({ type: 'varchar', length: 1500,nullable: true  })
   @IsString()
   @Length(1, 1500)
   description: string; //описание подборки, строка до 1500 символов

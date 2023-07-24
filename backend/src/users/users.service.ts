@@ -26,6 +26,19 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
+
+  async findById(
+    id: number,
+    password = false,
+  ): Promise<User> {
+    const user = await this.usersRepository
+      .createQueryBuilder('user')
+      .addSelect(password ? 'user.password' : '')
+      .where('user.id = :id', { id })
+      .getOne();
+    return user;
+  }
+
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const { email, username, password } = createUserDto;
     const user = await this.findOne({ where: [{ email }, { username }] });
