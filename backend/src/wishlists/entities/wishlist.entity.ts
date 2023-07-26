@@ -1,4 +1,11 @@
-import { IsInt, IsString, Length, Min } from 'class-validator';
+import {
+  IsInt,
+  IsString,
+  IsUrl,
+  Length,
+  MaxLength,
+  Min,
+} from 'class-validator';
 import { User } from 'src/users/entities/user.entity';
 import { Wish } from 'src/wishes/entities/wish.entity';
 import {
@@ -9,6 +16,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity()
@@ -24,20 +32,20 @@ export class Wishlist {
   @UpdateDateColumn()
   updatedAt: Date; //дата изменения, тип значения
 
-  @Column({ type: 'varchar', length: 250 })
-  @IsString()
+  @Column()
   @Length(1, 250)
   name: string; // название списка.  Не может быть длиннее 250 символов и короче одного
 
-  @Column({ type: 'varchar', length: 1500,nullable: true  })
-  @IsString()
-  @Length(1, 1500)
+  @Column({ default: '' })
+  @MaxLength(1500)
   description: string; //описание подборки, строка до 1500 символов
 
   @Column()
+  @IsUrl()
   image: string; //обложка для подборки
 
   @ManyToMany(() => Wish, (wish) => wish)
+  @JoinTable()
   items: Wish[]; //содержит набор ссылок на подарки
 
   @ManyToOne(() => User, (user) => user.wishlists)

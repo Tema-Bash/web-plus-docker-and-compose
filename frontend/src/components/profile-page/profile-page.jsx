@@ -92,35 +92,35 @@ export const ProfilePage = ({ extraClass = "" }) => {
         Настройки профиля
       </h2>
       <form className={styles.form} onSubmit={submitFormData}>
-        <label htmlFor='image' className={styles.img_box}>
+        <label htmlFor="image" className={styles.img_box}>
           <div className={styles.avatar}>
             <img className={styles.img} src={userCtx.avatar} />
           </div>
         </label>
         <Input
-          name='avatar'
-          type='url'
-          id='avatar'
+          name="avatar"
+          type="url"
+          id="avatar"
           defaultValue={userCtx.avatar}
-          placeholder='Укажите тут ссылку на аватар'
-          label='Аватар'
+          placeholder="Укажите тут ссылку на аватар"
+          label="Аватар"
           onChange={changeProfileData}
-          extraClass='mb-16'
+          extraClass="mb-16"
           required={true}
         />
         <Textarea
-          name='about'
-          type='text'
-          id='about'
+          name="about"
+          type="text"
+          id="about"
           defaultValue={userCtx.about}
-          placeholder='Несколько предложений о себе'
-          label='О себе'
+          placeholder="Несколько предложений о себе"
+          label="О себе"
           onChange={changeProfileData}
           maxLength={MAXIMUM_DESCRIPTION_LENGTH}
         />
         <p className={`text text_type_small mt-4 mb-16 ${styles.caption}`}>
           {`${
-            profileData?.about?.length || userCtx?.about?.length || 0
+            profileData?.about?.length || userCtx?.about.length || 0
           }/${MAXIMUM_DESCRIPTION_LENGTH} символов`}
         </p>
         {updateMessages.successProfile && (
@@ -134,12 +134,12 @@ export const ProfilePage = ({ extraClass = "" }) => {
           </span>
         )}
         <Button
-          type='submit'
-          kind='secondary'
-          text='Сохранить изменения'
-          name='profileData'
+          type="submit"
+          kind="secondary"
+          text="Сохранить изменения"
+          name="profileData"
           extraClass={styles.btn}
-          value='profileData'
+          value="profileData"
         />
         <h2
           className={`text text_type_h2 text_color_primary mb-16 ${styles.h2}`}
@@ -147,32 +147,32 @@ export const ProfilePage = ({ extraClass = "" }) => {
           Личная информация
         </h2>
         <Input
-          name='email'
-          type='email'
+          name="email"
+          type="email"
           id={4}
-          placeholder='Укажите тут'
-          label='E-mail'
+          placeholder="Укажите тут"
+          label="E-mail"
           onChange={changePersonalData}
-          extraClass='mb-12'
+          extraClass="mb-12"
           defaultValue={userCtx.email}
         />
         <Input
-          name='password'
-          type='password'
-          id='password'
-          placeholder='*******'
-          label='Пароль'
+          name="password"
+          type="password"
+          id="password"
+          placeholder="*******"
+          label="Пароль"
           onChange={changePersonalData}
-          extraClass='mb-16'
+          extraClass="mb-16"
         />
         <Input
-          name='username'
-          type='text'
+          name="username"
+          type="text"
           id={5}
-          placeholder='username'
-          label='Юзернейм'
+          placeholder="username"
+          label="Юзернейм"
           onChange={changePersonalData}
-          extraClass='mb-16'
+          extraClass="mb-16"
           defaultValue={userCtx.username}
           maxLength={MAXIMUM_USERNAME_LENGTH}
         />
@@ -187,12 +187,12 @@ export const ProfilePage = ({ extraClass = "" }) => {
           </span>
         )}
         <Button
-          type='submit'
-          kind='secondary'
-          text='Сохранить изменения'
-          name='personalData'
+          type="submit"
+          kind="secondary"
+          text="Сохранить изменения"
+          name="personalData"
           extraClass={styles.btn}
-          value='personalData'
+          value="personalData"
         />
       </form>
     </section>

@@ -8,7 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
-  Injectable
+  Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { WishlistsService } from './wishlists.service';
@@ -17,20 +17,20 @@ import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { In, Repository } from 'typeorm';
 import { Wishlist } from './entities/wishlist.entity';
+import { User } from 'src/users/entities/user.entity';
+import { ReqUser } from 'src/users/users.decorator';
 @Injectable()
 @UseGuards(JwtAuthGuard)
 @Controller('wishlistlists')
 export class WishlistsController {
   constructor(private readonly wishlistsService: WishlistsService) {}
-
   @Post()
   async create(
-    @Req() req,
+    @ReqUser() user: User,
     @Body() createWishlistDto: CreateWishlistDto,
-  ): Promise<Wishlist> {
-    return this.wishlistsService.create(req.user, createWishlistDto);
+  ) {
+    return await this.wishlistsService.create(user.id, createWishlistDto);
   }
-
 
   @Get()
   async getWishLists() {
@@ -40,7 +40,6 @@ export class WishlistsController {
       delete item.owner.email;
     });
     return wishlists;
-
   }
 
   @Get(':id')

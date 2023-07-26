@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import styles from "./user-supported-card.module.css";
 
 export const UserSupportedCard = ({
-  user = "",
+  name = "",
   img,
   amount,
   date,
@@ -23,7 +23,7 @@ export const UserSupportedCard = ({
           to="/user"
           className={`text text_type_main text_color_primary ${styles.link}`}
         >
-          {`${user} ${"\u{2197}"}`}
+          {`${name} ${"\u{2197}"}`}
         </NavLink>
       </div>
       <div className={`ml-10 ${styles.data_box}`}>

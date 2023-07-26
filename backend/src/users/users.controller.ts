@@ -14,6 +14,8 @@ import { IsString } from 'class-validator';
 import { RequestUser } from 'src/auth/auth.controller';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { FindUsersDto } from './dto/find-user.dto';
+import { User } from './entities/user.entity';
+import { ReqUser } from './users.decorator';
 
 export class FindUserDto {
   @IsString()
@@ -36,8 +38,11 @@ export class UsersController {
   }
 
   @Patch('me')
-  updateUser(@Body() updateUserDto: UpdateUserDto, @Req() req: RequestUser) {
-    return this.usersService.updateUser(req.user.id, updateUserDto);
+  async updateProfile(
+    @ReqUser() user: User,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return await this.usersService.updateOne(user.id, updateUserDto);
   }
 
   @Get('me/wishes')

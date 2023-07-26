@@ -22,15 +22,12 @@ export class UsersService {
     private usersRepository: Repository<User>,
     private hashService: HashService,
   ) {}
+
   async findAll() {
     return this.usersRepository.find();
   }
 
-
-  async findById(
-    id: number,
-    password = false,
-  ): Promise<User> {
+  async findById(id: number, password = false): Promise<User> {
     const user = await this.usersRepository
       .createQueryBuilder('user')
       .addSelect(password ? 'user.password' : '')
@@ -62,29 +59,50 @@ export class UsersService {
     return this.usersRepository.find(query);
   }
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto) {
-    const { email, username, password } = updateUserDto;
-    const user = await this.usersRepository.findOne({ where: { id } });
-    const isExist = Boolean(
-      await this.findOne({
-        where: [{ email }, { username }],
-      }),
-    );
-    if (isExist)
-      throw new ConflictException(
-        `Пользователь с таким email или username уже зарегистрирован`,
+  // async updateUser(id: number, updateUserDto: UpdateUserDto) {
+  //   const { email, username, password } = updateUserDto;
+  //   const user = await this.usersRepository.findOne({ where: { id } });
+  //   const isExist = Boolean(
+  //     await this.findOne({
+  //       where: [{ email }, { username }],
+  //     }),
+  //   );
+  //   if (isExist)
+  //     throw new ConflictException(
+  //       `Пользователь с таким email или username уже зарегистрирован`,
+  //     );
+  //   if (password) {
+  //     updateUserDto.password = await this.hashService.getHashedPassword(
+  //       password,
+  //     );
+  //   }
+  //   try {
+  //     await this.usersRepository.update({ id }, { ...user, ...updateUserDto });
+  //     return this.findOne({ where: { id } });
+  //   } catch (err) {
+  //     throw new BadRequestException(`${error}`);
+  //   }
+  // }
+
+  async updateOne(id: number, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.password) {
+      const hashedPassword = await this.hashService.getHashedPassword(
+        updateUserDto.password,
       );
-    if (password) {
-      updateUserDto.password = await this.hashService.getHashedPassword(
-        password,
-      );
+      updateUserDto = { ...updateUserDto, password: hashedPassword };
     }
-    try {
-      await this.usersRepository.update({ id }, { ...user, ...updateUserDto });
-      return this.findOne({ where: { id } });
-    } catch (err) {
-      throw new BadRequestException(`${error}`);
+    await this.usersRepository.update(id, updateUserDto);
+    return this.findOneById(id);
+  }
+
+  async findOneById(id: number) {
+    const user = this.findOne({
+      where: { id },
+    });
+    if (!user) {
+      throw new NotFoundException('такой пользователь не существует');
     }
+    return user;
   }
 
   async getCurrentUserWishes(userId: number) {
