@@ -112,36 +112,6 @@ export class WishesService {
     });
     return await this.wishRepository.save(copiedWish);
   }
-  // async copyWish(user, id) {
-  //   const wish = await this.findWish(Number(id));
-
-  //   const { name, link, price } = wish;
-
-  //   const isExist = Boolean(
-  //     await this.wishRepository.findOne({
-  //       where: {
-  //         name,
-  //         link,
-  //         price,
-  //         owner: { id: user.id },
-  //       },
-  //       relations: { owner: true },
-  //     }),
-  //   );
-
-  //   if (isExist) {
-  //     throw new ForbiddenException('Вы уже копировали себе этот подарок');
-  //   }
-
-  //   await this.update(wish.id, user.id, {
-  //     copied: wish.copied++,
-  //   });
-
-  //   delete wish.id;
-  //   delete wish.createdAt;
-  //   delete wish.updatedAt;
-  //   return this.create(user, { ...wish });
-  // }
 
   updateRaisedAmount(wish: Wish, amount: number) {
     return this.wishRepository.update(

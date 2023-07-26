@@ -66,28 +66,4 @@ export class OffersService {
     await this.offersRepository.save(newOffer);
     return newOffer;
   }
-
-  // async createOffer(createOfferDto: CreateOfferDto, user: User) {
-  //   const wish = await this.wishesService.findOneById(createOfferDto.itemId);
-  //   const { price, raised, owner } = wish;
-  //   if (raised + createOfferDto.amount > price) {
-  //     throw new BadRequestException('Сумма взноса больше чем осталось собрать');
-  //   }
-  //   if (user.id === owner.id) {
-  //     throw new BadRequestException(
-  //       'Вносить деньги можно только на подарки другим',
-  //     );
-  //   }
-
-  //   await this.wishesService.update(wish.id, user.id, {
-  //     raised: wish.raised + createOfferDto.amount,
-  //   });
-  //   const updatedWish = await this.wishesService.findOneById(wish.id);
-
-  //   return this.offersRepository.save({
-  //     ...createOfferDto,
-  //     user,
-  //     item: updatedWish,
-  //   });
-  // }
 }

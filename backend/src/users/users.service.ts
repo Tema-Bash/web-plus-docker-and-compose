@@ -59,31 +59,6 @@ export class UsersService {
     return this.usersRepository.find(query);
   }
 
-  // async updateUser(id: number, updateUserDto: UpdateUserDto) {
-  //   const { email, username, password } = updateUserDto;
-  //   const user = await this.usersRepository.findOne({ where: { id } });
-  //   const isExist = Boolean(
-  //     await this.findOne({
-  //       where: [{ email }, { username }],
-  //     }),
-  //   );
-  //   if (isExist)
-  //     throw new ConflictException(
-  //       `Пользователь с таким email или username уже зарегистрирован`,
-  //     );
-  //   if (password) {
-  //     updateUserDto.password = await this.hashService.getHashedPassword(
-  //       password,
-  //     );
-  //   }
-  //   try {
-  //     await this.usersRepository.update({ id }, { ...user, ...updateUserDto });
-  //     return this.findOne({ where: { id } });
-  //   } catch (err) {
-  //     throw new BadRequestException(`${error}`);
-  //   }
-  // }
-
   async updateOne(id: number, updateUserDto: UpdateUserDto) {
     if (updateUserDto.password) {
       const hashedPassword = await this.hashService.getHashedPassword(
@@ -105,14 +80,6 @@ export class UsersService {
     return user;
   }
 
-  // async getCurrentUserWishes(userId: number) {
-  //   return this.findOne({
-  //     where: { id: userId },
-  //     relations: {
-  //       wishes: { owner: true },
-  //     },
-  //   }).then((user) => user.wishes);
-  // }
   async getUserWishesById(id: number) {
     const user = await this.findOne({
       where: { id },

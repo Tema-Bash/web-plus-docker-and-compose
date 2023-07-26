@@ -1,6 +1,6 @@
 const { protocol } = window.location;
-// export const URL = `${protocol}//api.anf.nomoredomains.xyz`;
-export const URL = `${protocol}//localhost:4000`;
+export const URL = `${protocol}//api.anf.nomoredomains.xyz`;
+// export const URL = `${protocol}//localhost:4000`;
 
 export const MINIMUM_PASSWORD_LENGTH = 3;
 export const MINIMUM_USERNAME_LENGTH = 3;

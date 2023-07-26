@@ -23,15 +23,15 @@ export const RecoveryPassword = ({ extraClass = "" }) => {
     if (step === 1) {
       setStep(2);
     }
-    // loginUser(userData.username, userData.password).then((res) => {
-    //   if (res && res.auth_token) {
-    //     getUser().then((res) => {
-    //       if (res && res.id) {
-    //         history.replace({ pathname: "/" });
-    //       }
-    //     });
-    //   }
-    // });
+    loginUser(userData.username, userData.password).then((res) => {
+      if (res && res.auth_token) {
+        getUser().then((res) => {
+          if (res && res.id) {
+            history.replace({ pathname: "/" });
+          }
+        });
+      }
+    });
   };
 
   return (
@@ -44,37 +44,37 @@ export const RecoveryPassword = ({ extraClass = "" }) => {
       <form className={styles.form}>
         {step === 1 ? (
           <Input
-            name="email"
-            type="email"
+            name='email'
+            type='email'
             id={1}
-            placeholder="Укажите тут"
-            label="E-mail"
+            placeholder='Укажите тут'
+            label='E-mail'
             onChange={onChangeInput}
           />
         ) : (
           <>
             <Input
-              name="password"
-              type="password"
+              name='password'
+              type='password'
               id={2}
-              placeholder="Введите новый пароль"
-              label="Новый пароль"
+              placeholder='Введите новый пароль'
+              label='Новый пароль'
               onChange={onChangeInput}
-              extraClass="mb-16"
+              extraClass='mb-16'
             />
             <Input
-              name="text"
-              type="text"
+              name='text'
+              type='text'
               id={3}
-              placeholder="Введите код из письма"
-              label="Код из письма"
+              placeholder='Введите код из письма'
+              label='Код из письма'
               onChange={onChangeInput}
             />
           </>
         )}
         <Button
-          type="button"
-          kind="secondary"
+          type='button'
+          kind='secondary'
           text={`${step === 1 ? "Восстановить" : "Сохранить"}`}
           extraClass={styles.btn}
           onClick={handleSubmit}
@@ -87,7 +87,7 @@ export const RecoveryPassword = ({ extraClass = "" }) => {
           Вспомнили пароль?
         </p>
         <NavLink
-          to="/signin"
+          to='/signin'
           className={`text text_type_button text_color_primary ${styles.nav}`}
         >
           Войти

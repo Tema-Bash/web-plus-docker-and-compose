@@ -20,10 +20,6 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 export class OffersController {
   constructor(private readonly offersService: OffersService) {}
 
-  // @Post()
-  // create(@Body() createOfferDto: CreateOfferDto, @Req() req: RequestUser) {
-  //   return this.offersService.createOffer(createOfferDto, req.user);
-  // }
   @Post()
   async create(@ReqUser() user: User, @Body() createOfferDto: CreateOfferDto) {
     await this.offersService.create(user, createOfferDto);
