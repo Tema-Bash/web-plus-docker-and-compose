@@ -105,13 +105,22 @@ export class UsersService {
     return user;
   }
 
-  async getCurrentUserWishes(userId: number) {
-    return this.findOne({
-      where: { id: userId },
+  // async getCurrentUserWishes(userId: number) {
+  //   return this.findOne({
+  //     where: { id: userId },
+  //     relations: {
+  //       wishes: { owner: true },
+  //     },
+  //   }).then((user) => user.wishes);
+  // }
+  async getUserWishesById(id: number) {
+    const user = await this.findOne({
+      where: { id },
       relations: {
-        wishes: { owner: true },
+        wishes: { owner: true, offers: true },
       },
-    }).then((user) => user.wishes);
+    });
+    return user.wishes;
   }
 
   async getUserByUsername(username: string) {

@@ -45,9 +45,13 @@ export class UsersController {
     return await this.usersService.updateOne(user.id, updateUserDto);
   }
 
+  // @Get('me/wishes')
+  // getMyWishes(@Req() req: RequestUser) {
+  //   return this.usersService.getCurrentUserWishes(req.user.id);
+  // }
   @Get('me/wishes')
-  getMyWishes(@Req() req: RequestUser) {
-    return this.usersService.getCurrentUserWishes(req.user.id);
+  getProfileWishes(@ReqUser() user: User) {
+    return this.usersService.getUserWishesById(user.id);
   }
 
   @Get(':username')

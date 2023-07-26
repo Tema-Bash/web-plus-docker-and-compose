@@ -24,7 +24,5 @@ console.log('config', config);
     AuthModule,
     HashModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

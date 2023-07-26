@@ -11,6 +11,7 @@ import { Wish } from './entities/wish.entity';
 import { Repository } from 'typeorm/repository/Repository';
 
 import { FindManyOptions } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class WishesService {
@@ -40,6 +41,21 @@ export class WishesService {
     });
   }
 
+  async findWish(id: number) {
+    const wish = await this.wishRepository.findOne({
+      where: { id },
+      relations: {
+        owner: true,
+        offers: { user: true },
+      },
+    });
+    if (!wish) {
+      throw new NotFoundException(`Такой подарок не существует`);
+    } else {
+      return wish;
+    }
+  }
+
   findOneById(id: number) {
     const wish = this.wishRepository.findOne({
       relations: {
@@ -60,7 +76,7 @@ export class WishesService {
   }
 
   async update(id: number, userId: number, updateWishDto: UpdateWishDto) {
-    const wish = await this.findOneById(Number(id));
+    const wish = await this.findWish(Number(id));
     if (userId !== wish.owner.id) {
       throw new ForbiddenException('Подарок не для вас');
     } else if (wish.raised > 0) {
@@ -72,7 +88,7 @@ export class WishesService {
   }
 
   async remove(id: number, userId: number) {
-    const wish = await this.findOneById(Number(id));
+    const wish = await this.findWish(Number(id));
 
     if (userId !== wish.owner.id) {
       throw new ForbiddenException('Удалять можно только свои подарки');
@@ -81,34 +97,56 @@ export class WishesService {
     return this.wishRepository.delete({ id });
   }
 
-  async copyWish(user, id) {
-    const wish = await this.findOneById(Number(id));
-
-    const { name, link, price } = wish;
-
-    const isExist = Boolean(
-      await this.wishRepository.findOne({
-        where: {
-          name,
-          link,
-          price,
-          owner: { id: user.id },
-        },
-        relations: { owner: true },
-      }),
-    );
-
-    if (isExist) {
-      throw new ForbiddenException('Вы уже копировали себе этот подарок');
-    }
-
-    await this.update(wish.id, user.id, {
-      copied: wish.copied++,
+  async copyWish(id: number, user: User) {
+    const wish = await this.findWish(id);
+    await this.wishRepository.update(id, { copied: wish.copied + 1 });
+    const { name, link, image, price, description } = wish;
+    const copiedWish = await this.wishRepository.create({
+      name,
+      link,
+      image,
+      price,
+      description,
+      raised: 0,
+      owner: user,
     });
+    return await this.wishRepository.save(copiedWish);
+  }
+  // async copyWish(user, id) {
+  //   const wish = await this.findWish(Number(id));
 
-    delete wish.id;
-    delete wish.createdAt;
-    delete wish.updatedAt;
-    return this.create(user, { ...wish });
+  //   const { name, link, price } = wish;
+
+  //   const isExist = Boolean(
+  //     await this.wishRepository.findOne({
+  //       where: {
+  //         name,
+  //         link,
+  //         price,
+  //         owner: { id: user.id },
+  //       },
+  //       relations: { owner: true },
+  //     }),
+  //   );
+
+  //   if (isExist) {
+  //     throw new ForbiddenException('Вы уже копировали себе этот подарок');
+  //   }
+
+  //   await this.update(wish.id, user.id, {
+  //     copied: wish.copied++,
+  //   });
+
+  //   delete wish.id;
+  //   delete wish.createdAt;
+  //   delete wish.updatedAt;
+  //   return this.create(user, { ...wish });
+  // }
+
+  updateRaisedAmount(wish: Wish, amount: number) {
+    return this.wishRepository.update(
+      { id: wish.id },
+      { raised: wish.raised + amount },
+    );
   }
 }

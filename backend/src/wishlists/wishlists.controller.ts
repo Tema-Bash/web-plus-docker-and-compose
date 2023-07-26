@@ -24,6 +24,7 @@ import { ReqUser } from 'src/users/users.decorator';
 @Controller('wishlistlists')
 export class WishlistsController {
   constructor(private readonly wishlistsService: WishlistsService) {}
+
   @Post()
   async create(
     @ReqUser() user: User,

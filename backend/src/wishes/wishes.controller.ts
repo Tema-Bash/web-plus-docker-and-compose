@@ -13,6 +13,8 @@ import { WishesService } from './wishes.service';
 import { CreateWishDto } from './dto/create-wish.dto';
 import { UpdateWishDto } from './dto/update-wish.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { User } from 'src/users/entities/user.entity';
+import { ReqUser } from 'src/users/users.decorator';
 
 @Controller('wishes')
 export class WishesController {
@@ -56,9 +58,15 @@ export class WishesController {
     return this.wishesService.remove(+id, req.user.id);
   }
 
+  // @UseGuards(JwtAuthGuard)
+  // @Post(':id/copy')
+  // copyWish(@Req() req, @Param('id') id: string) {
+  //   return this.wishesService.copyWish(req.user, id);
+  // }
   @UseGuards(JwtAuthGuard)
   @Post(':id/copy')
-  copyWish(@Req() req, @Param('id') id: string) {
-    return this.wishesService.copyWish(req.user, id);
+  async copy(@ReqUser() user: User, @Param('id') id: string) {
+    this.wishesService.copyWish(+id, user);
+    return {};
   }
 }

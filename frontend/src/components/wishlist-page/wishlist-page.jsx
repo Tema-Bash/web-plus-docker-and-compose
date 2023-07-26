@@ -20,6 +20,7 @@ export const WishlistPage = ({ extraClass = "" }) => {
   useEffect(() => {
     if (sessionStorage.getItem("auth_token")) {
       getOwnWishes().then((res) => {
+        console.log("res", res);
         setOwnWishes(res);
       });
     }
@@ -59,7 +60,7 @@ export const WishlistPage = ({ extraClass = "" }) => {
       });
     });
   };
-
+  console.log("data", data);
   return (
     <section className={`${styles.content} ${extraClass}`}>
       <h1 className={`text text_type_h1 text_color_primary ${styles.title}`}>
@@ -67,46 +68,46 @@ export const WishlistPage = ({ extraClass = "" }) => {
       </h1>
       {currentCardsId.length ? (
         <div className={styles.menu}>
-          <p className="text text_type_button">{`Выберите то, что хотите удалить | ${currentCardsId.length} выбрано`}</p>
+          <p className='text text_type_button'>{`Выберите то, что хотите удалить | ${currentCardsId.length} выбрано`}</p>
           <div className={styles.btn_box}>
             <button
               className={styles.btn}
-              type="button"
+              type='button'
               onClick={handleRemoveSelection}
             >
-              <img src={cancelIcon} alt="Кнопка снятия выделения." />
-              <p className="text text_type_button ml-4">Снять выделение</p>
+              <img src={cancelIcon} alt='Кнопка снятия выделения.' />
+              <p className='text text_type_button ml-4'>Снять выделение</p>
             </button>
             <button
               className={styles.btn}
-              type="button"
+              type='button'
               onClick={handlePopupOpen}
             >
-              <img src={trashIcon} alt="Кнопка удаления карточки." />
-              <p className="text text_type_button text_color_red-bg ml-4">
+              <img src={trashIcon} alt='Кнопка удаления карточки.' />
+              <p className='text text_type_button text_color_red-bg ml-4'>
                 Удалить выбранное
               </p>
             </button>
             {isPopupOpen && (
               <Modal onClose={handlePopupClose} extraClass={styles.modal}>
                 <div className={styles.popup}>
-                  <p className="text text_type_main mb-10">
+                  <p className='text text_type_main mb-10'>
                     Удалить выбранные подарки?
                   </p>
                   <div className={styles.popup_btn_box}>
                     <Button
-                      type="button"
+                      type='button'
                       extraClass={styles.popup_btn}
-                      kind="support"
-                      text="Отмена"
+                      kind='support'
+                      text='Отмена'
                       onClick={handleRemoveSelection}
                     />
                     <Button
-                      type="button"
+                      type='button'
                       extraClass={styles.popup_btn}
-                      kind="secondary"
+                      kind='secondary'
                       onClick={handleRemoveCards}
-                      text="Удалить"
+                      text='Удалить'
                     />
                   </div>
                 </div>
